@@ -31,7 +31,7 @@ class SelfAttention(nn.Module):
         # Note that these are the lengths of the heads
         value_len, key_len, query_len = values.shape[1], keys.shape[1], query.shape[1]
         # print(f"Value: {value_len}, Key: {key_len}, Query:{query_len}")
-        # Observation, the length of these MUST be equal, because they are the same as head_dim
+        # Observation: the query and the value does not need to match up. Although value and key has to!
 
         # Split embedding/query into self.heads pieces
         values = values.reshape(N, value_len, self.heads, self.head_dim)
