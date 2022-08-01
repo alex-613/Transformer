@@ -1,30 +1,37 @@
 import torch
 import torch.nn as nn
 
+# Build single headed self-attention
 class SelfAttention(nn.Module):
     def __init__(self, embed_size, heads):
-
         super(SelfAttention, self).__init__()
+        # Save the embedding size, the number of attention heads and the dimension for the heads
         self.embed_size = embed_size
         self.heads = heads
-        self.head_dim = embed_size // heads
+        self.head_dim = embed_size // heads # This is the size of the head (query)
 
         assert (self.head_dim*heads == embed_size), "Embed size needs to be divisible by heads"
 
         # Lets define the values, keys, queries and fully connected output after concatenation after attention
-        
+
+        # Please note that the keys, values and queries all have the same dimension
         self.values = nn.Linear(self.head_dim, self.head_dim, bias=False)
         self.keys = nn.Linear(self.head_dim, self.head_dim, bias=False)
         self.queries = nn.Linear(self.head_dim, self.head_dim, bias=False)
+
+        # We also combine all of the heads and their dimensions together to get the final fc_output
         self.fc_out = nn.Linear(heads*self.head_dim, embed_size)
         
     def forward(self, values, keys, query, mask):
-        # This is the number of queries we are sending in each time
+        # This is the number of queries we are sending in each time, not the length of the query!
         N = query.shape[0]
 
         # Depending on where you use the attention, these lengths may differ, this corresponds to source and target length
-        
+
+        # Note that these are the lengths of the heads
         value_len, key_len, query_len = values.shape[1], keys.shape[1], query.shape[1]
+        print(f"Value: {value_len}, Key: {key_len}, Query:{query_len}")
+
 
         # Split embedding/query into self.heads pieces
         values = values.reshape(N, value_len, self.heads, self.head_dim)
