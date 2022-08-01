@@ -33,7 +33,7 @@ class SelfAttention(nn.Module):
 
         # Multiply the keys with the queries, call it energy
         # Einsum is used for multidimensional matrix multiplication
-        energy = torch.einsum("nqhd,nkhd->nhqk" [queries, keys])
+        energy = torch.einsum("nqhd,nkhd->nhqk", [queries, keys])
         # Queries shape: (N, query_len, heads, heads_dim)
         # Keys shape: (N, key_len, heads, heads_dim)
         # Energy shape: (N, heads, query_len, key_len)
@@ -131,7 +131,7 @@ class Decoder(nn.Module):
     def __init__(self, trg_vocab_size, embed_size, num_layers, heads, forward_expansion, dropout, device, max_length):
     
         super(Decoder,self).__init__()
-        self.device = devicce
+        self.device = device
         self.word_embedding = nn.Embedding(trg_vocab_size, embed_size)
         self.position_embedding = nn.Embedding(max_length, embed_size)
         self.layers = nn.ModuleList(
