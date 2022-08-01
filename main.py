@@ -30,13 +30,15 @@ class SelfAttention(nn.Module):
 
         # Note that these are the lengths of the heads
         value_len, key_len, query_len = values.shape[1], keys.shape[1], query.shape[1]
-        print(f"Value: {value_len}, Key: {key_len}, Query:{query_len}")
-
+        # print(f"Value: {value_len}, Key: {key_len}, Query:{query_len}")
+        # Observation, the length of these MUST be equal, because they are the same as head_dim
 
         # Split embedding/query into self.heads pieces
         values = values.reshape(N, value_len, self.heads, self.head_dim)
         keys = keys.reshape(N, key_len, self.heads, self.head_dim)
-        queries = query.reshape(N, query_len, self.heads, self.head_dim) 
+        queries = query.reshape(N, query_len, self.heads, self.head_dim)
+
+        print(f"Value: {values.shape}, Key: {keys.shape}, Query:{keys.shape}")
 
         values = self.values(values)
         keys = self.keys(keys)
