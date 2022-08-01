@@ -192,7 +192,7 @@ class Transformer(nn.Module):
         
     def make_trg_mask(self, trg):
         N, trg_len = trg.shape 
-        trg_mask = torch.tril(torch.ones(trg_len, trg_len))).expand(
+        trg_mask = torch.tril(torch.ones(trg_len, trg_len)).expand(
             N, 1, trg_len, trg_len
             )
         return trg_mask.to(self.device)
