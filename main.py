@@ -94,7 +94,7 @@ class Encoder(nn.Module):
                 dropout=dropout,
                 forward_expansion=forward_expansion
                 )
-        ]
+        ])
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x, mask):
