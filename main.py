@@ -31,7 +31,7 @@ class SelfAttention(nn.Module):
         keys = keys.reshape(N, key_len, self.heads, self.head_dim)
         queries = query.reshape(N, query_len, self.heads, self.head_dim) 
 
-        values = self.values
+        values = self.values(values)
         keys = self.keys(keys)
         queries = self.queries(queries)
         # Multiply the keys with the queries, call it energy
@@ -96,9 +96,7 @@ class Encoder(nn.Module):
                 heads,
                 dropout=dropout,
                 forward_expansion=forward_expansion
-                )
-            for _ in range(num_layers)
-        ])
+                ) for _ in range(num_layers)])
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x, mask):
